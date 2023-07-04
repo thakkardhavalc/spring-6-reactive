@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Import;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * Created By dhaval on 2023-07-04
  */
@@ -26,9 +24,7 @@ class BeerRepositoryTest {
     @Test
     void testSaveNewBeer() {
         beerRepository.save(getTestBeer())
-                .subscribe(beer -> {
-                    log.info(beer.toString());
-                });
+                .subscribe(beer -> log.info(beer.toString()));
     }
 
     Beer getTestBeer() {
