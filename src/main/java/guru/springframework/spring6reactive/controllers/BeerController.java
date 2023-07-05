@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -23,6 +25,15 @@ import static guru.springframework.spring6reactive.utility.Constants.BEER_PATH_I
 public class BeerController {
 
     private final BeerService beerService;
+
+    @PutMapping(BEER_PATH_ID)
+    ResponseEntity<Object> updateBeer(@PathVariable Integer beerId,
+                                      @RequestBody BeerDTO beerDTO) {
+
+        beerService.updateBeer(beerId, beerDTO).subscribe();
+
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping(BEER_PATH)
     Mono<ResponseEntity<Void>> createNewBeer(BeerDTO beerDTO) {
