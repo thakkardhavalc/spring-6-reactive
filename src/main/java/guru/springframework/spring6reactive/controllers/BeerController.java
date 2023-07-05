@@ -5,6 +5,7 @@ import guru.springframework.spring6reactive.services.BeerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +26,14 @@ import static guru.springframework.spring6reactive.utility.Constants.BEER_PATH_I
 public class BeerController {
 
     private final BeerService beerService;
+
+    @PatchMapping(BEER_PATH_ID)
+    Mono<ResponseEntity<Void>> patchBeer(@PathVariable Integer beerId,
+                                         @RequestBody BeerDTO beerDTO) {
+
+        return beerService.patchBeer(beerId, beerDTO)
+                .map(updatedDto -> ResponseEntity.ok().build());
+    }
 
     @PutMapping(BEER_PATH_ID)
     ResponseEntity<Object> updateBeer(@PathVariable Integer beerId,
