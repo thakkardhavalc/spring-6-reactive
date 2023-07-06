@@ -48,6 +48,14 @@ class BeerControllerTest {
     }
 
     @Test
+    void testUpdateBeerIdNotFound() {
+        webTestClient.put().uri(BEER_PATH_ID, 99)
+                .body(Mono.just(getTestBeer()), BeerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     @Order(3)
     void testUpdateBeer() {
         webTestClient.put().uri(BEER_PATH_ID, 1)
