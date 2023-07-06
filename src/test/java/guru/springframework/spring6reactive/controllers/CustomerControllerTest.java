@@ -27,11 +27,34 @@ class CustomerControllerTest {
     WebTestClient webTestClient;
 
     @Test
+    void testPatchIdNotFound() {
+        webTestClient.patch().uri(CUSTOMER_PATH_ID, 99)
+                .body(Mono.just(getTestCustomer()), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    void testDeleteCustomerByIdNotFound() {
+        webTestClient.delete().uri(CUSTOMER_PATH_ID, 99)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     @Order(999)
     void testDeleteCustomer() {
         webTestClient.delete().uri(CUSTOMER_PATH_ID, 1)
                 .exchange()
                 .expectStatus().isNoContent();
+    }
+
+    @Test
+    void testUpdateCustomerIdNotFound() {
+        webTestClient.put().uri(CUSTOMER_PATH_ID, 99)
+                .body(Mono.just(getTestCustomer()), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
     }
 
     @Test
@@ -44,6 +67,18 @@ class CustomerControllerTest {
     }
 
     @Test
+    void testCreateCustomerBadData() {
+        Customer testCustomer = getTestCustomer();
+        testCustomer.setCustomerName("");
+
+        webTestClient.post().uri(CUSTOMER_PATH)
+                .body(Mono.just(testCustomer), CustomerDTO.class)
+                .header("content-type", "application/json")
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
+    @Test
     void testCreateCustomer() {
         webTestClient.post().uri(CUSTOMER_PATH)
                 .body(Mono.just(getTestCustomer()), CustomerDTO.class)
@@ -51,6 +86,13 @@ class CustomerControllerTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectHeader().location("http://localhost:8080/api/v2/customer/4");
+    }
+
+    @Test
+    void testGetCustomerByIdNotFound() {
+        webTestClient.get().uri(CUSTOMER_PATH_ID, 99)
+                .exchange()
+                .expectStatus().isNotFound();
     }
 
     @Test
