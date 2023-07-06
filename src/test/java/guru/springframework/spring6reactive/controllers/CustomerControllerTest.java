@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import static guru.springframework.spring6reactive.utility.Constants.CUSTOMER_PATH;
 import static guru.springframework.spring6reactive.utility.Constants.CUSTOMER_PATH_ID;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created By dhaval on 2023-07-06
